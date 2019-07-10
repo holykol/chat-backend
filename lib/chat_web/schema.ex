@@ -40,11 +40,16 @@ defmodule ChatWeb.Schema do
 
 	object :user do
 		field :id, :id
-		field :username, :string do
-			resolve fn _, ctx ->
-				{:ok, "user-#{ctx.source.id}" }
-			end
-		end
+		field :username, :string
+	end
+
+	object :message do
+		field :id, :id
+		field :text, :string
+		field :from, :user
+		field :chat_id, :id
+		field :chat, :chat
+		field :created_at, :integer
 	end
 
   query do
