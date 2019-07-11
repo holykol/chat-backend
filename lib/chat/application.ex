@@ -11,7 +11,9 @@ defmodule Chat.Application do
       # Start the Ecto repository
       Chat.Repo,
       # Start the endpoint when the application starts
-      ChatWeb.Endpoint
+      ChatWeb.Endpoint,
+      # Subscriptions
+      {Absinthe.Subscription, [ChatWeb.Endpoint]}
       # Starts a worker by calling: Chat.Worker.start_link(arg)
       # {Chat.Worker, arg},
     ]

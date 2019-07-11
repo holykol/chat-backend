@@ -58,4 +58,59 @@ defmodule ChatWeb.Schema do
 
   end
 
+  mutation do
+  	field :register, :string do
+  		@desc "Register with login and password. Returns token"
+  		arg :username, non_null(:string)
+  		arg :password, non_null(:string)
+
+      resolve fn _, _ -> {:error, "not implemented"} end
+  	end
+
+  	field :create_chat, :chat do
+  		arg :title, :string
+  		arg :members, list_of(:id)
+
+      resolve fn _, _ -> {:error, "not implemented"} end
+  	end
+
+  	field :join_chat, :chat do
+  		arg :chat_id, :string
+
+      resolve fn _, _ -> {:error, "not implemented"} end
+  	end
+
+  	field :send_message, :message do
+  		arg :chat_id, non_null(:id)
+  		arg :text, non_null(:string)
+
+      resolve fn _, _ -> {:error, "not implemented"} end
+  	end
+
+		field :delete_message, :boolean do
+  		arg :chat_id, non_null(:id)
+  		arg :text, non_null(:string)
+
+      resolve fn _, _ -> {:error, "not implemented"} end
+  	end
+
+
+
+  end
+
+  # TBD
+ 	subscription do
+ 		field :new_message, :message do
+ 			arg :chat_ids, list_of(:id)
+
+ 			config fn args, _ ->
+      	{:ok, topic: args.chat_ids}
+    	end
+
+    	trigger :send_message, topic: fn message ->
+    		true # TODO
+    	end
+ 		end
+ 	end
+
 end
