@@ -84,7 +84,7 @@ defmodule ChatWeb.Schema do
   		arg :chat_id, non_null(:id)
   		arg :text, non_null(:string)
 
-      resolve fn _, _ -> {:error, "not implemented"} end
+      resolve fn args, _ -> {:ok, %{id: "id", text: args.text, from: "id", chat_id: args.chat_id}} end
   	end
 
 		field :delete_message, :boolean do
@@ -101,14 +101,16 @@ defmodule ChatWeb.Schema do
   # TBD
  	subscription do
  		field :new_message, :message do
- 			arg :chat_ids, list_of(:id)
+ 			# arg :chat_ids, list_of(:id)
+ 			arg :chat_id, :id
 
  			config fn args, _ ->
-      	{:ok, topic: args.chat_ids}
+      	{:ok, topic: args.chat_id}
     	end
 
     	trigger :send_message, topic: fn message ->
-    		true # TODO
+    		IO.inspect message
+    		message.chat_id
     	end
  		end
  	end
