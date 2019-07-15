@@ -1,6 +1,8 @@
 defmodule ChatWeb.Schema do
   use Absinthe.Schema
 
+  alias ChatWeb.Resolvers
+
 	object :chat do
 	  field :id, non_null(:id)
 	  field :title, non_null(:string)
@@ -40,7 +42,7 @@ defmodule ChatWeb.Schema do
   		arg :username, non_null(:string)
   		arg :password, non_null(:string)
 
-	  	resolve fn _, _ -> {:error, "not implemented"} end
+	  	resolve &Resolvers.Users.login/3
 	  end
 
   	field :me, :user do
@@ -64,7 +66,7 @@ defmodule ChatWeb.Schema do
   		arg :username, non_null(:string)
   		arg :password, non_null(:string)
 
-      resolve fn _, _ -> {:error, "not implemented"} end
+      resolve &Resolvers.Users.register/3
   	end
 
   	field :create_chat, :chat do
@@ -84,7 +86,14 @@ defmodule ChatWeb.Schema do
   		arg :chat_id, non_null(:id)
   		arg :text, non_null(:string)
 
-      resolve fn args, _ -> {:ok, %{id: "id", text: args.text, from: "id", chat_id: args.chat_id}} end
+
+
+      resolve fn args, _ ->
+      	IO.puts "Helo"
+      	message = %{id: "id", text: args.text, from: "id", chat_id: args.chat_id}
+      	Absinthe.Subscription.publish(ChatWeb.Endpoint, message, multiple_topics: args.chat_id)
+      	{:ok, message}
+      end
   	end
 
 		field :delete_message, :boolean do
@@ -98,21 +107,20 @@ defmodule ChatWeb.Schema do
 
   end
 
-  # TBD
  	subscription do
  		field :new_message, :message do
- 			# arg :chat_ids, list_of(:id)
- 			arg :chat_id, :id
+ 			arg :chat_ids, list_of(:id)
 
  			config fn args, _ ->
-      	{:ok, topic: args.chat_id}
+      	{:ok}
     	end
 
     	trigger :send_message, topic: fn message ->
-    		IO.inspect message
     		message.chat_id
     	end
+
  		end
+
  	end
 
 end

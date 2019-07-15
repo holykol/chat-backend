@@ -10,7 +10,8 @@ defmodule Chat.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_deps: :transitive]
     ]
   end
 
@@ -44,7 +45,13 @@ defmodule Chat.MixProject do
 
       {:absinthe, "~> 1.4"},
       {:absinthe_phoenix, "~> 1.4"},
-      {:absinthe_plug, "~> 1.4"}
+      {:absinthe_plug, "~> 1.4"},
+
+      {:bcrypt_elixir, "~> 2.0"},
+      {:json_web_token, "~> 0.2"},
+
+      {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
+
     ]
   end
 
