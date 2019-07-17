@@ -52,12 +52,12 @@ defmodule ChatWeb.Schema do
 
       field :chat, :chat do
          arg :id, non_null(:id)
-         resolve fn _, _ -> {:error, "not implemented"} end
+         resolve &Resolvers.Rooms.room/2
       end
 
       field :my_chats, list_of(:chat) do
          middleware ChatWeb.Auth
-         resolve fn _, _ -> {:error, "not implemented"} end
+         resolve &Resolvers.Rooms.user_rooms/2
       end
 
    end
