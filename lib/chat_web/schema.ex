@@ -46,6 +46,7 @@ defmodule ChatWeb.Schema do
       end
 
       field :me, :user do
+         middleware ChatWeb.Auth
          resolve &Resolvers.Users.user_info/3
       end
 
@@ -55,6 +56,7 @@ defmodule ChatWeb.Schema do
       end
 
       field :my_chats, list_of(:chat) do
+         middleware ChatWeb.Auth
          resolve fn _, _ -> {:error, "not implemented"} end
       end
 
@@ -73,12 +75,14 @@ defmodule ChatWeb.Schema do
          arg :title, :string
          arg :members, list_of(:id)
 
-         resolve fn _, _ -> {:error, "not implemented"} end
+         middleware ChatWeb.Auth
+         resolve &Resolvers.Rooms.create_room/3
       end
 
       field :join_chat, :chat do
          arg :chat_id, :string
 
+         middleware ChatWeb.Auth
          resolve fn _, _ -> {:error, "not implemented"} end
       end
 
@@ -86,7 +90,7 @@ defmodule ChatWeb.Schema do
          arg :chat_id, non_null(:id)
          arg :text, non_null(:string)
 
-
+         middleware ChatWeb.Auth
 
          resolve fn args, _ ->
             IO.puts "Helo"
@@ -100,6 +104,8 @@ defmodule ChatWeb.Schema do
          arg :chat_id, non_null(:id)
          arg :text, non_null(:string)
 
+         middleware ChatWeb.Auth
+
          resolve fn _, _ -> {:error, "not implemented"} end
       end
 
@@ -112,7 +118,7 @@ defmodule ChatWeb.Schema do
          arg :chat_ids, list_of(:id)
 
          config fn args, _ ->
-            {:ok}
+            {:ok, args.topics}
          end
 
          trigger :send_message, topic: fn message ->

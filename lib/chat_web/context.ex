@@ -27,7 +27,7 @@ defmodule ChatWeb.Context do
       JsonWebToken.verify(token, %{key: ChatWeb.Endpoint.config(:secret_key_base)})
       |> case do
          {:ok, claims} -> {:ok, claims.id}
-         {:error, "invalid"} -> {:error, "invalid authorization token"}
+         {:error, "invalid"} -> {:error   , "invalid authorization token"}
       end
    end
 

@@ -27,12 +27,17 @@ defmodule ChatWeb.Resolvers.Users do
 	end
 
 	def user_info(_parent, _args, %{context: %{current_user: current_user}} = resolution) do
-		User
-		|> Repo.get(current_user)
-		|> case do
-			user -> {:ok, user}
-			_ -> {:error, "failed to get user"}
+		try do
+			case Repo.get(User, current_user) do
+				nil -> {:error, "user not found"}
+				user -> {:ok, user}
+			end
+		rescue
+			e ->
+				IO.inspect e
+				{:error, "failed to get user"}
 		end
+
 	end
 
 	defp issue_token(id) do
