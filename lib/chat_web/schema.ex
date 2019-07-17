@@ -8,7 +8,7 @@ defmodule ChatWeb.Schema do
       field :title, non_null(:string)
 
       field :creator, :user do
-         resolve fn _, _ -> {:error, "not implemented"} end
+         resolve &Resolvers.Rooms.room_owner/3
       end
 
       field :members, list_of(:user) do
@@ -108,8 +108,6 @@ defmodule ChatWeb.Schema do
 
          resolve fn _, _ -> {:error, "not implemented"} end
       end
-
-
 
    end
 

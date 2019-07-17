@@ -36,3 +36,5 @@ chat-*.tar
 /config/*.secret.exs
 
 TODO*
+
+.elixir_ls/
