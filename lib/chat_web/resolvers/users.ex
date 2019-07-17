@@ -26,6 +26,15 @@ defmodule ChatWeb.Resolvers.Users do
 		{:ok, token}
 	end
 
+	def user_info(_parent, _args, %{context: %{current_user: current_user}} = resolution) do
+		User
+		|> Repo.get(current_user)
+		|> case do
+			user -> {:ok, user}
+			_ -> {:error, "failed to get user"}
+		end
+	end
+
 	defp issue_token(id) do
 		JsonWebToken.sign(%{id: id}, %{key: ChatWeb.Endpoint.config(:secret_key_base)})
 	end
