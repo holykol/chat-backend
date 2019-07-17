@@ -83,7 +83,7 @@ defmodule ChatWeb.Schema do
          arg :chat_id, :string
 
          middleware ChatWeb.Auth
-         resolve fn _, _ -> {:error, "not implemented"} end
+         resolve &Resolvers.Rooms.join_room/2
       end
 
       field :send_message, :message do

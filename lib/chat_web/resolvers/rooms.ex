@@ -25,4 +25,23 @@ defmodule ChatWeb.Resolvers.Rooms do
 
       {:ok, rooms}
    end
+
+   def join_room(%{chat_id: chat_id}, %{context: %{current_user: current_user}}) do
+      room = Repo.get(Room, chat_id) |> Repo.preload([:members])
+      IO.inspect room
+      if room == nil do
+         {:error, "no such room"}
+      else
+         user = Repo.get(User, current_user)
+
+         # Добавляем пользователя в список участников комнаты.
+         room = Ecto.Changeset.change(room)
+         |> Ecto.Changeset.put_assoc(:members, [user])
+         |> Repo.update!()
+
+         {:ok, room}
+      end
+
+
+   end
 end

@@ -5,6 +5,7 @@ defmodule Chat.Room do
    schema "rooms" do
       field :title, :string
       belongs_to :owner, Chat.User, foreign_key: :owner_id
+      many_to_many :members, Chat.User, join_through: "room_members"
 
       timestamps()
    end

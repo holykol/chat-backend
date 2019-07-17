@@ -20,6 +20,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 ## Доки
 	* Phoenix https://hexdocs.pm/phoenix/
-	* Ecto migrations https://hexdocs.pm/ecto_sql/
 	* Ecto https://hexdocs.pm/ecto/
+	* Ecto migrations https://hexdocs.pm/ecto_sql/
+  * Ecto relations https://elixirschool.com/en/lessons/ecto/associations/
 	* Graphql https://hexdocs.pm/absinthe/
