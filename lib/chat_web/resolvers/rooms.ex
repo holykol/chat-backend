@@ -18,6 +18,13 @@ defmodule ChatWeb.Resolvers.Rooms do
       {:ok, Repo.get(User, parent.owner_id)}
    end
 
+   def room_members(parent, _, _) do
+      room = Repo.get(Room, parent.id) |> Repo.preload(:members)
+      members = Repo.all Ecto.assoc(room, :members)
+
+      {:ok, members}
+   end
+
    def user_rooms(_args, %{context: %{current_user: current_user}} = _resolution) do
       rooms = Room
       |> Ecto.Query.where(owner_id: ^current_user)

@@ -12,7 +12,7 @@ defmodule ChatWeb.Schema do
       end
 
       field :members, list_of(:user) do
-         resolve fn _, _ -> {:error, "not implemented"} end
+         resolve &Resolvers.Rooms.room_members/3
       end
 
       field :messages, list_of(:message) do
