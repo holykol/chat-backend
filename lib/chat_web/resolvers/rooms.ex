@@ -35,20 +35,20 @@ defmodule ChatWeb.Resolvers.Rooms do
 
    def join_room(%{chat_id: chat_id}, %{context: %{current_user: current_user}}) do
       room = Repo.get(Room, chat_id) |> Repo.preload([:members])
-      IO.inspect room
+
       if room == nil do
          {:error, "no such room"}
       else
          user = Repo.get(User, current_user)
 
          # Добавляем пользователя в список участников комнаты.
+         # https://hexdocs.pm/ecto/Ecto.Changeset.html#put_assoc/4-example-adding-a-comment-to-a-post
+
          room = Ecto.Changeset.change(room)
-         |> Ecto.Changeset.put_assoc(:members, [user])
+         |> Ecto.Changeset.put_assoc(:members, [user | room.members])
          |> Repo.update!()
 
          {:ok, room}
       end
-
-
    end
 end
