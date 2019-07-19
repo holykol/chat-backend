@@ -31,8 +31,19 @@ defmodule ChatWeb.Schema do
    object :message do
       field :id, non_null(:id)
       field :text, non_null(:string)
-      field :chat_id, non_null(:id)
-      field :created_at, :integer
+      field :chat_id, non_null(:id) do
+         resolve fn m, _, _ -> {:ok, m.room_id} end
+      end
+
+      field :created_at, :integer do
+         resolve fn m, _, _ ->
+            # Конвертируем в unix время
+            # Что там у нас с таймзонами?
+            {:ok, time} = DateTime.from_naive(m.inserted_at, "Etc/UTC")
+
+            {:ok, DateTime.to_unix(time) }
+         end
+      end
 
       field :from, non_null(:user) do
          resolve fn _, _ -> {:error, "not implemented"} end
@@ -99,12 +110,7 @@ defmodule ChatWeb.Schema do
 
          middleware ChatWeb.Auth
 
-         resolve fn args, _ ->
-            IO.puts "Helo"
-            message = %{id: "id", text: args.text, from: "id", chat_id: args.chat_id}
-            Absinthe.Subscription.publish(ChatWeb.Endpoint, message, multiple_topics: args.chat_id)
-            {:ok, message}
-         end
+         resolve &Resolvers.Messages.send_message/2
       end
 
       field :delete_message, :boolean do
@@ -118,20 +124,20 @@ defmodule ChatWeb.Schema do
 
    end
 
-   subscription do
-      field :new_message, :message do
-         arg :chat_ids, list_of(:id)
+   # subscription do
+   #    field :new_message, :message do
+   #       arg :chat_ids, list_of(:id)
 
-         config fn args, _ ->
-            {:ok, args.topics}
-         end
+   #       config fn args, _ ->
+   #          {:ok, args.topics}
+   #       end
 
-         trigger :send_message, topic: fn message ->
-            message.chat_id
-         end
+   #       trigger :send_message, topic: fn message ->
+   #          message.chat_id
+   #       end
 
-      end
+   #    end
 
-   end
+   # end
 
 end

@@ -14,7 +14,7 @@ defmodule Chat.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:text])
+    |> cast(attrs, [:text, :sender, :room])
     |> validate_required([:text])
     |> Ecto.Changeset.cast_assoc(:sender, required: true)
     |> Ecto.Changeset.cast_assoc(:room, required: true)
