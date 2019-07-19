@@ -31,10 +31,17 @@ defmodule ChatWeb.Schema do
    object :message do
       field :id, non_null(:id)
       field :text, non_null(:string)
-      field :from, non_null(:user)
       field :chat_id, non_null(:id)
-      field :chat, non_null(:chat)
       field :created_at, :integer
+
+      field :from, non_null(:user) do
+         resolve fn _, _ -> {:error, "not implemented"} end
+      end
+
+      field :chat, non_null(:chat) do
+         resolve fn _, _ -> {:error, "not implemented"} end
+      end
+
    end
 
    query do
