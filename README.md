@@ -24,3 +24,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 	* Ecto migrations https://hexdocs.pm/ecto_sql/
   * Ecto relations https://elixirschool.com/en/lessons/ecto/associations/
 	* Graphql https://hexdocs.pm/absinthe/
+
+## Что пока плохо
+  * Обработка ошибок как бог
+  * Absinthe не поддерживает директивы
