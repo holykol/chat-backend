@@ -46,7 +46,7 @@ defmodule ChatWeb.Schema do
       end
 
       field :from, non_null(:user) do
-         resolve fn _, _ -> {:error, "not implemented"} end
+         resolve &Resolvers.Messages.sender/3
       end
 
       field :chat, non_null(:chat) do

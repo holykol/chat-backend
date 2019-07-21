@@ -28,3 +28,4 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 ## Что пока плохо
   * Обработка ошибок как бог
   * Absinthe не поддерживает директивы
+  * Немножко дубликации кода из-за того, что мне лень пилить ещё одну сущность (контроллеры)
