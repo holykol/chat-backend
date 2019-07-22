@@ -43,9 +43,9 @@ defmodule Chat.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
 
-      {:absinthe, "~> 1.4"},
-      {:absinthe_phoenix, "~> 1.4"},
-      {:absinthe_plug, "~> 1.4"},
+      {:absinthe, "~> 1.5.0-alpha.4"},
+      {:absinthe_phoenix, "~> 1.5.0-alpha.0"},
+      {:absinthe_plug, "~> 1.5.0-alpha.0"},
 
       {:bcrypt_elixir, "~> 2.0"},
       {:json_web_token, "~> 0.2"},

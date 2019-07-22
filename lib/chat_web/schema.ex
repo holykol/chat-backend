@@ -124,20 +124,17 @@ defmodule ChatWeb.Schema do
 
    end
 
-   # subscription do
-   #    field :new_message, :message do
-   #       arg :chat_ids, list_of(:id)
+   subscription do
+      field :new_message, :message do
+         arg :chat_ids, list_of(:id)
 
-   #       config fn args, _ ->
-   #          {:ok, args.topics}
-   #       end
+         config fn args, _ ->
+            {:ok, %{topic: args.chat_ids}}
+         end
 
-   #       trigger :send_message, topic: fn message ->
-   #          message.chat_id
-   #       end
-
-   #    end
-
-   # end
-
+         trigger :send_message, topic: fn message ->
+            message.room_id
+         end
+      end
+   end
 end

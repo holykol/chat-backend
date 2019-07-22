@@ -13,7 +13,7 @@ defmodule Chat.Application do
       # Start the endpoint when the application starts
       ChatWeb.Endpoint,
       # Subscriptions
-      {Absinthe.Subscription, [ChatWeb.Endpoint]}
+      {Absinthe.Subscription, ChatWeb.Endpoint}
       # Starts a worker by calling: Chat.Worker.start_link(arg)
       # {Chat.Worker, arg},
     ]
