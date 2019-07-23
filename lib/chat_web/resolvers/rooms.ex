@@ -1,5 +1,5 @@
 defmodule ChatWeb.Resolvers.Rooms do
-   alias Chat.{Repo, Room, User}
+   alias Chat.{Repo, Room, User, Message}
 
    require Ecto.Query
 
@@ -50,5 +50,20 @@ defmodule ChatWeb.Resolvers.Rooms do
 
          {:ok, room}
       end
+   end
+
+   def room_messages(parent, args, _) do
+      import Ecto.Query
+
+      query = Message
+      |> where([m], m.room_id == ^parent.id)
+      |> limit(^args.limit)
+      |> order_by(desc: :inserted_at)
+
+      last_id = Map.get(args, :last_id, 0)
+      query = query |> where([m], m.id > ^last_id)
+
+      messages = Repo.all query
+      {:ok, messages}
    end
 end

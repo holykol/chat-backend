@@ -17,9 +17,9 @@ defmodule ChatWeb.Schema do
 
       field :messages, list_of(:message) do
          arg :last_id, :id
-         arg :limit, :integer
+         arg :limit, :integer, default_value: 100
 
-         resolve fn _, _ -> {:error, "not implemented"} end
+         resolve &Resolvers.Rooms.room_messages/3
       end
    end
 
