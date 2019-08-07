@@ -3,6 +3,7 @@ defmodule ChatWeb.Router do
 
    pipeline :api do
       plug :accepts, ["json"]
+      plug CORSPlug, [origin: "http://localhost:8080"]
       # Распознаём пользователя
       plug ChatWeb.Context
    end
@@ -15,7 +16,6 @@ defmodule ChatWeb.Router do
 
       forward "/", Absinthe.Plug,
          schema: ChatWeb.Schema
-
    end
 
 end

@@ -49,6 +49,7 @@ defmodule Chat.MixProject do
 
       {:bcrypt_elixir, "~> 2.0"},
       {:json_web_token, "~> 0.2"},
+      {:cors_plug, "~> 2.0"},
 
       {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
 
