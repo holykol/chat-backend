@@ -21,7 +21,7 @@ defmodule Chat.MixProject do
   def application do
     [
       mod: {Chat.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :ex_machina]
     ]
   end
 
@@ -52,6 +52,7 @@ defmodule Chat.MixProject do
       {:cors_plug, "~> 2.0"},
 
       {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
+      {:ex_machina, "~> 2.3", only: :test},
 
     ]
   end
