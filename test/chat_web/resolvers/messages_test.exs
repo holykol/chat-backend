@@ -73,5 +73,4 @@ defmodule ChatWeb.Resolvers.MessagesTest do
 
 		assert DateTime.compare(t1, t2) == :eq
 	end
-
 end
