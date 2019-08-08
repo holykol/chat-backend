@@ -9,4 +9,12 @@ defmodule Chat.Factory do
 		}
 	end
 
+	def room_factory do
+		%Chat.Room{
+			title: sequence("room"),
+			owner: build(:user),
+			members: build_list(3, :user)
+		}
+	end
+
 end
