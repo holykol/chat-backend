@@ -18,15 +18,9 @@ defmodule ChatWeb.Resolvers.Messages do
 	end
 
 	def message_sender(parent, _, _) do
-		try do
-			case Repo.get(User, parent.sender_id) do
-				nil -> {:error, "user not found"}
-				user -> {:ok, user}
-			end
-		rescue
-			e ->
-				IO.inspect e
-				{:error, "failed to get user"}
+		case Repo.get(User, parent.sender_id) do
+			nil -> {:error, "user not found"}
+			user -> {:ok, user}
 		end
 	end
 

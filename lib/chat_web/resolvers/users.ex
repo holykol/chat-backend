@@ -1,7 +1,7 @@
 defmodule ChatWeb.Resolvers.Users do
 	alias Chat.{Repo, User}
 
-	def login(_parent, %{username: username, password: password} = args, _resolution) do
+	def login(_parent, %{username: username, password: password} = _args, _resolution) do
 		user = Repo.get_by(User, username: username)
 
 		case Bcrypt.verify_pass(password, user.password) do
@@ -26,7 +26,7 @@ defmodule ChatWeb.Resolvers.Users do
 		{:ok, token}
 	end
 
-	def user_info(_parent, _args, %{context: %{current_user: current_user}} = resolution) do
+	def user_info(_parent, _args, %{context: %{current_user: current_user}} = _resolution) do
 		case Repo.get(User, current_user) do
 			nil -> {:error, "user not found"}
 			user -> {:ok, user}
