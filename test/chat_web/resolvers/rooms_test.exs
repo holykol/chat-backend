@@ -122,8 +122,6 @@ defmodule ChatWeb.Resolvers.RoomsTest do
 					chat(id: #{room.id}) {
 						messages(limit: 2) {
 							id
-							text
-							created_at
 						}
 					}
 				}
@@ -140,8 +138,6 @@ defmodule ChatWeb.Resolvers.RoomsTest do
 					chat(id: #{room.id}) {
 						messages(lastId: #{Enum.at(messages, 0).id}) {
 							id
-							text
-							created_at
 						}
 					}
 				}

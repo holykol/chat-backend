@@ -21,7 +21,7 @@ defmodule Chat.MixProject do
   def application do
     [
       mod: {Chat.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ex_machina]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
