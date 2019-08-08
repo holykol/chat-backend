@@ -108,4 +108,50 @@ defmodule ChatWeb.Resolvers.RoomsTest do
 
 	end
 
+	describe "can query room messages" do
+		setup do
+			room = insert(:room)
+			messages = insert_list(4, :message, room: room)
+
+			{:ok, %{room: room, messages: messages}}
+		end
+
+		test "with limit param", %{room: room} do
+			query = """
+				{
+					chat(id: #{room.id}) {
+						messages(limit: 2) {
+							id
+							text
+							created_at
+						}
+					}
+				}
+			"""
+
+			{:ok, %{data: result}} = Absinthe.run(query, ChatWeb.Schema)
+			assert length(result["chat"]["messages"]) == 2
+
+		end
+
+		test "with last_id param", %{room: room, messages: messages} do
+			query = """
+				{
+					chat(id: #{room.id}) {
+						messages(lastId: #{Enum.at(messages, 0).id}) {
+							id
+							text
+							created_at
+						}
+					}
+				}
+			"""
+
+			{:ok, %{data: result}} = Absinthe.run(query, ChatWeb.Schema)
+			assert length(result["chat"]["messages"]) == 3 # One was skipped
+
+		end
+
+	end
+
 end

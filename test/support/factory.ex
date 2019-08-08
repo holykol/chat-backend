@@ -17,4 +17,11 @@ defmodule Chat.Factory do
 		}
 	end
 
+	def message_factory do
+		%Chat.Message{
+			text: "Message text",
+			room: build(:room),
+			sender: build(:user)
+		}
+	end
 end
