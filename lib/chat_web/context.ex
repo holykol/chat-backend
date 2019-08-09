@@ -15,20 +15,34 @@ defmodule ChatWeb.Context do
    Прикрепляет данные о пользователе к контексту, если в запросе есть jwt токен
    """
    def build_context(conn) do
-      with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-      {:ok, current_user} <- authorize(token) do
-         %{current_user: current_user}
-      else
-         _ -> %{}
+      conn
+      |> get_token
+      |> authorize
+      |> case do
+         {:ok, current_user} -> %{current_user: current_user}
+         {:error, _} -> %{}
+      end
+   end
+
+   defp get_token(conn) do
+      case get_req_header(conn, "authorization") do
+         ["Bearer " <> token] -> token
+         _ -> ""
       end
    end
 
    defp authorize(token) do
-      JsonWebToken.verify(token, %{key: ChatWeb.Endpoint.config(:secret_key_base)})
-      |> case do
-         {:ok, claims} -> {:ok, claims.id}
-         {:error, "invalid"} -> {:error   , "invalid authorization token"}
+      try do
+         JsonWebToken.verify(token, %{key: ChatWeb.Endpoint.config(:secret_key_base)})
+         |> case do
+            {:ok, claims} -> {:ok, claims.id}
+            {:error, "invalid"} -> {:error, "invalid authorization token"}
+         end
+      rescue
+         _ -> {:error, "invalid authorization token"}
       end
+
+
    end
 
 end
